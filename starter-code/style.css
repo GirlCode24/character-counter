@@ -1,0 +1,285 @@
+@font-face {
+    font-family: 'DM_Sans';
+    src: url('./assets/fonts/DM_Sans/DMSans-VariableFont_opsz\,wght.ttf'),
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: DM_Sans;
+}
+
+body {
+    padding: 1rem;
+}
+
+/* header */
+.main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.06rem 0;
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    padding: 0.4rem;
+    border-radius: 0.4rem;
+    border: none;
+}
+
+.theme-toggle>img {
+    width: 20px;
+    height: 20px;
+}
+
+/* card header */
+
+.card-header h1 {
+    font-size: 40px;
+    text-align: center;
+    letter-spacing: -1px;
+    font-weight: bold;
+    line-height: 100%;
+    margin: 2.5rem 0;
+}
+
+#text-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.75rem;
+    background-color: #e4e4ef;
+    height: 200px;
+    margin-bottom: 1rem;
+}
+
+#text-input::placeholder,
+#text-input {
+    font-size: 1.25rem;
+    line-height: 140%;
+    letter-spacing: -0.6px;
+}
+
+.card-body {
+    font-size: 20px;
+    line-height: 140%;
+    letter-spacing: -0.6px;
+}
+
+.options>div {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-bottom: 1rem;
+
+}
+
+
+.options input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 40px;
+    margin-right: 0.7rem;
+}
+.hidden-input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* results */
+.results {
+    margin-top: 2.5rem;
+
+}
+
+.result-cards {
+    display: grid;
+    width: 100%;
+    gap: 1rem;
+}
+
+.result-card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 1.7rem 1.25rem;
+    border-radius: 0.75rem;
+    justify-content: center;
+    background-color: #f2f2f7;
+}
+
+.result-card h2 {
+    font-size: 40px;
+    line-height: 100%;
+    letter-spacing: -1px;
+}
+
+.result-card p {
+    font-size: 20px;
+    line-height: 140%;
+    letter-spacing: -0.6px;
+}
+
+.result-card.characters {
+    background-color: #D3A0FA;
+}
+
+.result-card.word {
+    background-color: #FF9F00;
+}
+
+.result-card.sentence {
+    background-color: #FE8159;
+}
+
+.character-svg,
+.word-svg,
+.sentence-svg {
+    position: absolute;
+    top: 10;
+    right: -50px;
+}
+
+.letter-density {
+    margin-top: 1.5rem;
+}
+
+.letter-density h3 {
+    margin-bottom: 1.25rem;
+}
+
+/* media Queries for tablet*/
+
+@media screen and (min-width: 600px) and (max-width: 1024px) {
+    body {
+        padding: 2rem;
+    }
+
+    .card-header h1 {
+        font-size: 64px;
+        padding: 0 6.06rem;
+        text-align: center;
+        letter-spacing: -1px;
+        font-weight: bold;
+        line-height: 100%;
+        margin: 2.5rem 0;
+    }
+
+    #text-input {
+        padding: 1.25rem;
+    }
+
+    .options {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .options>div {
+        flex-direction: row;
+    }
+
+    .options-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .options-group.exclude {
+        margin-right: 1.25rem;
+    }
+
+    .card-body {
+        font-size: 1rem;
+        line-height: 130%;
+        letter-spacing: -0.6px;
+    }
+
+    .result-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .result-card h2 {
+        font-size: 64px;
+        line-height: 100%;
+        letter-spacing: -1px;
+    }
+
+    .letter-density h3 {
+        font-size: 24px;
+        line-height: 130%;
+        letter-spacing: -1px;
+    }
+
+}
+
+    /* media queries for desktop*/
+@media screen and (min-width: 1024px) {
+    body {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 12.06rem;
+    }
+
+.card-body {
+    font-size: 1rem;
+    line-height: 130%;
+    letter-spacing: -0.6px;
+}
+
+    .card-header h1 {
+        font-size: 64px;
+        padding: 0 6.06rem;
+        text-align: center;
+        letter-spacing: -1px;
+        font-weight: bold;
+        line-height: 100%;
+        margin: 2.5rem 0;
+    }
+
+    #text-input {
+        padding: 1.25rem;
+    }
+
+    .options {
+        display: flex;
+        justify-content: space-between;
+    }
+
+
+    .options-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .options-group.exclude {
+        margin-right: 1.25rem;
+    }
+
+
+    .result-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .result-card{
+        padding: 1.66rem 1rem;
+    }
+
+    .result-card h2 {
+        font-size: 64px;
+        line-height: 100%;
+        letter-spacing: -1px;
+    }
+
+    .options>div {
+        flex-direction: row;
+    }
+
+}

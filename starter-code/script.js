@@ -5,18 +5,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const sentenceCount = document.getElementById("sentence-count");
   const charLimitInput = document.getElementById("char-limit-input");
   const charLimitCheckbox = document.getElementById("char-limit-checkbox");
-  // for the error number limit
   const setLimit = document.getElementById("set-limit");
-  // the entire error message tag
   const errorMessage = document.getElementById("error-message");
-  // To excludeSpaces from the text area
   const excludeSpacesCheckbox = document.getElementById("exclude-spaces");
-  //Theme toggle button for both light and dark mode
   const themeToggle = document.getElementById("theme-toggle");
-  // the logo tag
   const logo = document.querySelector(".logo");
   const moonIcon = document.querySelector(".moon-icon");
-  // for the letter density message
   const noCharMessage = document.querySelector(".letter-density p");
   // see more/see less button
   const MAX_INITIAL_BARS = 5;
@@ -41,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
       moonIcon.style.backgroundColor = "#2A2B37";
       moonIcon.style.padding = "0.5rem";
       moonIcon.style.borderRadius = "20%";
-      moonIcon.style.border = "1px solid #3A3A4A"; // Add subtle border for visibility
+      moonIcon.style.border = "1px solid #3A3A4A"; 
       textInput.style.backgroundColor = "#2A2B37";
       textInput.style.color = "white";
     } else {
@@ -54,8 +48,8 @@ document.addEventListener("DOMContentLoaded", function () {
       moonIcon.style.backgroundColor = "#F2F2F7";
       moonIcon.style.padding = "0.5rem";
       moonIcon.style.borderRadius = "20%";
-      moonIcon.style.border = "1px solid #D0D0D7"; // Add subtle border for visibility
-      textInput.style.backgroundColor = ""; // Revert to CSS default (#E4E4EF)
+      moonIcon.style.border = "1px solid #D0D0D7"; 
+      textInput.style.backgroundColor = "";
       textInput.style.color = "";
     }
   });
@@ -71,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // update counts when the excludeSpaces checkbox is toggled
   excludeSpacesCheckbox.addEventListener("change", function () {
-    validateTextArea(); // re-run validation with new space setting
+    validateTextArea(); 
   });
 
   // update the displayed limit value and re-validate text area on every change in limit input

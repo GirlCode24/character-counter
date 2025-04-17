@@ -18,15 +18,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const moonIcon = document.querySelector(".moon-icon");
   // for the letter density message
   const noCharMessage = document.querySelector(".letter-density p");
+  // see more/see less button
+  const MAX_INITIAL_BARS = 5;
+  let isShowingAllBars = false;
+  let allDensityItems = [];
+  const seeMoreBtn = document.querySelector(".see-more-btn");
+  const letterDensityContainer = document.querySelector(".letter-density-items");
 
   // Theme toogle variables
   let darkMode = false;
 
-  // Theme toggle functionality
   moonIcon.addEventListener("click", function () {
-    darkMode = !darkMode; // dynamically change the theme
+    darkMode = !darkMode;
+
     if (darkMode) {
-      // for dark mode
+      // Dark mode
       document.documentElement.style.setProperty("--primary-bg", "#12131A");
       document.documentElement.style.setProperty("--text-color", "#FFFFFF");
       document.documentElement.style.setProperty("--textarea-bg", "#2A2B37");
@@ -35,16 +41,11 @@ document.addEventListener("DOMContentLoaded", function () {
       moonIcon.style.backgroundColor = "#2A2B37";
       moonIcon.style.padding = "0.5rem";
       moonIcon.style.borderRadius = "20%";
+      moonIcon.style.border = "1px solid #3A3A4A"; // Add subtle border for visibility
       textInput.style.backgroundColor = "#2A2B37";
-      textInput.style.border = "2px solid gray";
       textInput.style.color = "white";
-
-      // change focus color for textInput
-      // textInput.addEventListener("focus", function () {
-      //   textInput.style.border = "0 0 5px 5px purple";
-      // });
     } else {
-      // for light mode
+      // Light mode
       document.documentElement.style.setProperty("--primary-bg", "#FFFFFF");
       document.documentElement.style.setProperty("--text-color", "#12131A");
       document.documentElement.style.setProperty("--textarea-bg", "#F2F2F7");
@@ -52,7 +53,10 @@ document.addEventListener("DOMContentLoaded", function () {
       moonIcon.setAttribute("src", "./assets/images/icon-moon.svg");
       moonIcon.style.backgroundColor = "#F2F2F7";
       moonIcon.style.padding = "0.5rem";
-      textInput.style.backgroundColor = "#FFFFFF";
+      moonIcon.style.borderRadius = "20%";
+      moonIcon.style.border = "1px solid #D0D0D7"; // Add subtle border for visibility
+      textInput.style.backgroundColor = ""; // Revert to CSS default (#E4E4EF)
+      textInput.style.color = "";
     }
   });
 
@@ -87,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // this function handles all textarea validation and updates
   function validateTextArea() {
     // to extract the textArea input
-    const textInputText = textInput.value; // this is a big string
+    const textInputText = textInput.value;
 
     // check whether spaces should be excluded
     let processedText = null;
@@ -130,9 +134,8 @@ document.addEventListener("DOMContentLoaded", function () {
       textInput.removeAttribute("readonly");
       errorMessage.style.display = "none";
     }
-    //letters density display
 
-    // Update letter density display
+    //letters density display
     if (textInputText.length > 0) {
       noCharMessage.style.display = "none";
       updateLetterDensity(textInputText);
@@ -143,34 +146,27 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function updateLetterDensity(text) {
-    // Clear previous letter density display
     clearLetterDensity();
+    allDensityItems = [];
 
     // Create frequency map
     const frequencyMap = new Map();
     for (const char of text.toLowerCase()) {
       if (/[a-z]/.test(char)) {
-        // Only count letters
         frequencyMap.set(char, (frequencyMap.get(char) || 0) + 1);
       }
     }
 
-    // Calculate total letters
     const totalLetters = Array.from(frequencyMap.values()).reduce(
-      (sum, count) => sum + count,
-      0
+      (sum, count) => sum + count, 0
     );
 
-    // Sort by frequency (descending)
     const sortedEntries = Array.from(frequencyMap.entries()).sort(
       (a, b) => b[1] - a[1]
     );
 
-    // Get the letter density container
-    const letterDensityContainer = document.querySelector(".letter-density");
-
-    // Create and append letter density items
-    for (const [char, count] of sortedEntries) {
+    // Create all density items
+    sortedEntries.forEach(([char, count]) => {
       const percentage = Math.round((count / totalLetters) * 100);
 
       const item = document.createElement("div");
@@ -193,15 +189,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
       barContainer.appendChild(bar);
       item.append(charSpan, barContainer, percentageSpan);
-      letterDensityContainer.appendChild(item);
+      allDensityItems.push(item);
+    });
+
+    // Show/hide logic
+    if (allDensityItems.length > MAX_INITIAL_BARS) {
+      seeMoreBtn.style.display = "block";
+      seeMoreBtn.textContent = isShowingAllBars ? "See less" : "See more";
+      
+      const itemsToShow = isShowingAllBars 
+        ? allDensityItems 
+        : allDensityItems.slice(0, MAX_INITIAL_BARS);
+      
+      itemsToShow.forEach(item => letterDensityContainer.appendChild(item));
+    } else {
+      seeMoreBtn.style.display = "none";
+      allDensityItems.forEach(item => letterDensityContainer.appendChild(item));
     }
   }
 
   function clearLetterDensity() {
-    const letterDensityContainer = document.querySelector(".letter-density");
-    const items = letterDensityContainer.querySelectorAll(
-      ".letter-density-item"
-    );
-    items.forEach((item) => item.remove());
+    letterDensityContainer.innerHTML = "";
   }
+
+  // Event listener for See More/Less button
+  seeMoreBtn.addEventListener("click", function() {
+    isShowingAllBars = !isShowingAllBars;
+    updateLetterDensity(textInput.value);
+  });
 });

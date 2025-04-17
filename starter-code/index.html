@@ -8,72 +8,91 @@
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
   <link rel="stylesheet" href="./style.css">
 
-  <title>Frontend Mentor | Character counter</title>
+  <title>Frontend Mentor | Character Counter</title>
 </head>
 
 <body>
   <!-- Header -->
   <header class="main-header">
     <img src="./assets/images/logo-light-theme.svg" alt="Logo" class="logo">
-    <button class="theme-toggle">
-      <img src="./assets/images/icon-moon.svg" alt="Moon Icon" class="moon-icon">
-    </button>
+    <!-- <button class="theme-toggle" id="theme-toggle"> -->
+    <img src="./assets/images/icon-moon.svg" alt="Toggle dark mode" class="moon-icon">
+    <!-- </button> -->
   </header>
 
-  <!-- Main Content/card header-->
+  <!-- Main Content -->
   <main class="container">
+    <!-- Card Header -->
     <div class="card-header">
       <h1>Analyze your text in real-time.</h1>
     </div>
+
+    <!-- Text Input Area -->
     <section class="card-body">
-      <div>
+      <div class="text-area-container">
         <textarea id="text-input" placeholder="Start typing here...(Place your text here)"></textarea>
+        <p id="error-message">ⓘ Limit reached! Your text exceeds <span id="set-limit"></span> characters</p>
       </div>
+
+
+      <!-- Options -->
       <div class="options">
         <div>
           <div class="options-group exclude">
             <input type="checkbox" id="exclude-spaces">
             <label for="exclude-spaces">Exclude Spaces</label>
           </div>
+
           <div class="options-group character">
             <input type="checkbox" id="char-limit-checkbox">
-            <label for="char-limit">Set Character Limit</label>
-            <input type="number" id="char-limit" style="display:none;"/>
+            <label for="char-limit-checkbox">Set Character Limit</label>
+            <input type="number" id="char-limit-input" style="display: none;" class="char-limit-style">
           </div>
         </div>
-        <span>Approx. reading time: < 1 minute</span>
+
+        <span>Approx. reading time: &lt; 1 minute</span>
       </div>
     </section>
+
     <!-- Results Section -->
     <section class="results">
       <div class="result-cards">
         <div class="result-card characters">
-          <h2 id="total-charac">0</h2>
+          <h2 id="char-count">00</h2>
           <p>Total Characters</p>
-          <img src="./assets/images/pattern-character-count.svg" alt="background svg" class="character-svg">
+          <img src="./assets/images/pattern-character-count.svg" alt="Character count background" class="character-svg">
         </div>
+
         <div class="result-card word">
-          <h2 id="word-count">0</h2>
+          <h2 id="word-count">00</h2>
           <p>Word Count</p>
-          <img src="./assets/images/pattern-word-count.svg" alt="word-svg" class="word-svg">
+          <img src="./assets/images/pattern-word-count.svg" alt="Word count background" class="word-svg">
         </div>
+
         <div class="result-card sentence">
-          <h2 id="sentence-count">0</h2>
+          <h2 id="sentence-count">00</h2>
           <p>Sentence Count</p>
-          <img src="./assets/images/pattern-sentence-count.svg" alt="sentence" class="sentence-svg">
+          <img src="./assets/images/pattern-sentence-count.svg" alt="Sentence count background" class="sentence-svg">
         </div>
       </div>
+
+      <!-- Letter Density -->
       <div class="letter-density">
         <h3>Letter Density</h3>
         <p>No characters found. Start typing to see letter density.</p>
-        <!-- <div class="letter-density-chart">
-            <div class="letter-density-bar" style="width: 0%;"></div>
-          </div> -->
+        <div class="letter-density-items"></div>
+        <button class="see-more-btn" style="display: none;">See more</button>
+        <!-- You can add dynamic letter density bars here -->
+        <!-- Example: 
+        <div class="letter-density-chart">
+          <div class="letter-density-bar" style="width: 70%;"></div>
+        </div> 
+        -->
       </div>
-
     </section>
   </main>
-  <script src="./script.js  "></script>
+
+  <script src="./script.js"></script>
 </body>
 
 </html>

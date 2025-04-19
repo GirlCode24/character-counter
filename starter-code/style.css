@@ -100,7 +100,7 @@ body {
     border: 2px solid #FE8159;
     box-shadow: 0 0 0 2px rgba(254, 129, 89, 0.3);
 }
-/* Add to your existing CSS */
+
 .textarea-glow {
     border-color: #C27CF8 !important;
     box-shadow: 0 0 0 2px rgba(194, 124, 248, 0.3) !important;
@@ -318,6 +318,9 @@ body {
     margin-top: 8px;
     
     
+  }
+  .dark-mode .see-more-btn {
+    color: #FFFFFF !important; 
   }
 
 /* media Queries for tablet*/

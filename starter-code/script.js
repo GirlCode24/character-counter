@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const logo = document.querySelector(".logo");
   const moonIcon = document.querySelector(".moon-icon");
   const noCharMessage = document.querySelector(".letter-density p");
+  
+  
   // see more/see less button
   const MAX_INITIAL_BARS = 5;
   let isShowingAllBars = false;
@@ -19,9 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const seeMoreBtn = document.querySelector(".see-more-btn");
   const letterDensityContainer = document.querySelector(".letter-density-items");
 
-  // Theme toogle variables
+  // Theme toggle variables
   let darkMode = false;
 
+  // Theme toggle handler
   moonIcon.addEventListener("click", function () {
     darkMode = !darkMode;
 
@@ -30,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document.documentElement.style.setProperty("--primary-bg", "#12131A");
       document.documentElement.style.setProperty("--text-color", "#FFFFFF");
       document.documentElement.style.setProperty("--textarea-bg", "#2A2B37");
+      document.documentElement.style.setProperty("--checkbox-border", "#FFFFFF");
       logo.setAttribute("src", "./assets/images/logo-dark-theme.svg");
       moonIcon.setAttribute("src", "./assets/images/icon-sun.svg");
       moonIcon.style.backgroundColor = "#2A2B37";
@@ -40,12 +44,13 @@ document.addEventListener("DOMContentLoaded", function () {
       textInput.style.color = "white";
     } else {
       // Light mode
-      document.documentElement.style.setProperty("--primary-bg", "#FFFFFF");
+      document.documentElement.style.setProperty("--primary-bg", "#F2F2F7");
       document.documentElement.style.setProperty("--text-color", "#12131A");
-      document.documentElement.style.setProperty("--textarea-bg", "#F2F2F7");
+      document.documentElement.style.setProperty("--textarea-bg", "#E4E4EF");
+      document.documentElement.style.setProperty("--checkbox-border", "#12131A"); 
       logo.setAttribute("src", "./assets/images/logo-light-theme.svg");
       moonIcon.setAttribute("src", "./assets/images/icon-moon.svg");
-      moonIcon.style.backgroundColor = "#F2F2F7";
+      moonIcon.style.backgroundColor = "#E4E4EF";
       moonIcon.style.padding = "0.5rem";
       moonIcon.style.borderRadius = "20%";
       moonIcon.style.border = "1px solid #D0D0D7"; 
@@ -54,82 +59,91 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // toggle display of the character limit input when checkbox is clicked
-  charLimitCheckbox.addEventListener("click", function () {
-    if (charLimitInput.style.display === "block") {
-      charLimitInput.style.display = "none"; // hide the input that receives the character limit number
+  // Character limit checkbox handler
+  charLimitCheckbox.addEventListener("change", function() {
+    if (!this.checked) {
+      // When unchecking, clear all limit-related restrictions
+      charLimitInput.style.display = "none";
+      textInput.classList.remove("error");
+      errorMessage.style.display = "none";
+      textInput.removeEventListener("keydown", handleLimitKeydown);
+      charLimitInput.value = "";
     } else {
       charLimitInput.style.display = "block";
     }
+    validateTextArea();
   });
 
-  // update counts when the excludeSpaces checkbox is toggled
-  excludeSpacesCheckbox.addEventListener("change", function () {
-    validateTextArea(); 
-  });
-
-  // update the displayed limit value and re-validate text area on every change in limit input
+  // Character limit input handler
   charLimitInput.addEventListener("input", function () {
-    let userSetLimit = parseInt(charLimitInput.value); // extract the number from the limit input tag
+    let userSetLimit = parseInt(charLimitInput.value);
     if (!isNaN(userSetLimit) && userSetLimit > 0) {
       setLimit.innerText = userSetLimit;
     } else {
       setLimit.innerText = "00";
     }
-    validateTextArea(); // re-validate whenever limit changes
+    validateTextArea();
   });
 
-  // validate textarea on every input
+  // Keydown handler for character limit
+  function handleLimitKeydown(e) {
+    if (!["Backspace", "Delete", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(e.key)) {
+      e.preventDefault();
+    }
+  }
+
+  // Text input handler
   textInput.addEventListener("input", validateTextArea);
 
-  // this function handles all textarea validation and updates
+  // Main validation function
   function validateTextArea() {
-    // to extract the textArea input
     const textInputText = textInput.value;
+    
+    // Check whether spaces should be excluded
+    let processedText = excludeSpacesCheckbox.checked 
+      ? textInputText.replace(/\s+/g, "") 
+      : textInputText;
 
-    // check whether spaces should be excluded
-    let processedText = null;
-    if (excludeSpacesCheckbox.checked) {
-      processedText = textInputText.replace(/\s+/g, "");
-    } else {
-      processedText = textInputText;
-    }
-
-    // to update the number of characters
+    // Update character count
     const textInputTextLength = processedText.length;
     charCount.innerText = String(textInputTextLength).padStart(2, "0");
 
+    // Update word count
     let wordArray = textInputText.split(/[\s.:;!?(){}\[\]]+/);
-    let validWordCount = 0;
-    for (let word of wordArray) {
-      if (word.trim() !== "") {
-        validWordCount++;
-      }
-    }
+    let validWordCount = wordArray.filter(word => word.trim() !== "").length;
     wordCount.innerText = String(validWordCount).padStart(2, "0");
 
-    // to update the number of sentences
-    let sentenceArray = textInputText
-      .split(/[.?!]+/)
-      .filter((sentence) => sentence.trim() != ""); // to convert the string into an array, and trim every sentence to remove the empty spaces because deleting all the textArea content leaves one space which is counted as one length
+    // Update sentence count
+    let sentenceArray = textInputText.split(/[.?!]+/).filter(sentence => sentence.trim() !== "");
     sentenceCount.innerText = String(sentenceArray.length).padStart(2, "0");
 
-    // to set the character limit
-    let userSetLimit = parseInt(charLimitInput.value); // extract the number from the limit input tag
-    if (!isNaN(userSetLimit) && textInputTextLength > userSetLimit) {
-      textInput.style.border = "2px solid #FE8159";
-      textInput.style.boxShadow = "0 0 5px 5px var(--faded-purple)";
-      textInput.setAttribute("readonly", "true"); // to make it reject any input after exceeding the character limit
-      errorMessage.style.display = "inline-block";
-      setLimit.innerText = userSetLimit;
+    // Character limit validation
+    let userSetLimit = parseInt(charLimitInput.value);
+    if (charLimitCheckbox.checked && !isNaN(userSetLimit)){
+      if (textInputTextLength > userSetLimit) {
+        textInput.classList.add("error");
+        errorMessage.style.display = "inline-block";
+        setLimit.innerText = userSetLimit;
+        textInput.addEventListener("keydown", handleLimitKeydown);
+      } else {
+        textInput.classList.remove("error");
+        errorMessage.style.display = "none";
+        textInput.removeEventListener("keydown", handleLimitKeydown);
+      }
     } else {
-      textInput.style.border = "";
-      textInput.style.boxShadow = "";
-      textInput.removeAttribute("readonly");
+      textInput.classList.remove("error");
       errorMessage.style.display = "none";
+      textInput.removeEventListener("keydown", handleLimitKeydown);
     }
 
-    //letters density display
+    // Check if any checkbox is checked and apply glow
+    if (excludeSpacesCheckbox.checked || charLimitCheckbox.checked) {
+      textInput.classList.add("textarea-glow");
+    } else {
+      textInput.classList.remove("textarea-glow");
+    }
+
+    // Letter density display
     if (textInputText.length > 0) {
       noCharMessage.style.display = "none";
       updateLetterDensity(textInputText);
@@ -137,8 +151,9 @@ document.addEventListener("DOMContentLoaded", function () {
       noCharMessage.style.display = "block";
       clearLetterDensity();
     }
-  }
+}
 
+  // Letter density functions
   function updateLetterDensity(text) {
     clearLetterDensity();
     allDensityItems = [];
@@ -206,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
     letterDensityContainer.innerHTML = "";
   }
 
-  // Event listener for See More/Less button
+  // See more/less button handler
   seeMoreBtn.addEventListener("click", function() {
     isShowingAllBars = !isShowingAllBars;
     updateLetterDensity(textInput.value);

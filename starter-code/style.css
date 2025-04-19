@@ -57,15 +57,13 @@ body {
 #text-input:focus {
     outline: none;
     border-color: #C27CF8;
-    /* Purple focus color */
     box-shadow: 0 0 0 2px rgba(138, 122, 255, 0.2);
-    /* Subtle glow */
+   
 }
 
-/* Dark mode textarea focus (optional) */
+
 .dark-mode #text-input:focus {
     border-color: #D3A0FA;
-    /* Lighter purple for dark mode */
     box-shadow: 0 0 0 2px rgba(211, 160, 250, 0.3);
 }
 
@@ -88,8 +86,30 @@ body {
     background-color: #E4E4EF;
     height: 200px;
     margin-bottom: 1rem;
+    border: #E4E4EF;
 
 }
+#text-input:focus {
+    outline: none;
+    border-color: #C27CF8;
+    box-shadow: 0 0 0 2px rgba(194, 124, 248, 0.3); /* More visible shadow */
+}
+
+/* Error state */
+#text-input.error {
+    border: 2px solid #FE8159;
+    box-shadow: 0 0 0 2px rgba(254, 129, 89, 0.3);
+}
+
+.textarea-glow {
+    border-color: #C27CF8 !important;
+    box-shadow: 0 0 0 2px rgba(194, 124, 248, 0.3) !important;
+  }
+  
+  .dark-mode .textarea-glow {
+    border-color: #D3A0FA !important;
+    box-shadow: 0 0 0 2px rgba(211, 160, 250, 0.3) !important;
+  }
 
 #text-input::placeholder,
 #text-input {
@@ -123,12 +143,14 @@ body {
     cursor: pointer;
     position: relative;
     transition: all 0.2s ease;
+    border: 1px solid var(--checkbox-border, black);
 }
 
 
 .options input[type="checkbox"]:checked {
     background-color: #D3A0FA;
     border-color: #D3A0FA;
+    box-shadow: 0 0 0 2px rgba(194, 124, 248, 0.3);
 }
 
 
@@ -143,6 +165,12 @@ body {
     transform: translate(-50%, -50%);
     font-family: "Arial", sans-serif;
 }
+.options input[type="checkbox"]:checked ~ .card-body #text-input {
+    border-color: #C27CF8;
+    box-shadow: 0 0 0 2px rgba(194, 124, 248, 0.3);
+  }
+  
+
 
 .char-limit-style {
     width: 55px;
@@ -290,6 +318,9 @@ body {
     margin-top: 8px;
     
     
+  }
+  .dark-mode .see-more-btn {
+    color: #FFFFFF !important; 
   }
 
 /* media Queries for tablet*/

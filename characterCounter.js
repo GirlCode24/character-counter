@@ -20,7 +20,7 @@ function countSentences(text) {
 
     // Warning if character limit is exceeded
     if (text.length > 300) {
-      warningEl.textContent = '⚠️ Character limit exceeded!';
+      warningEl.textContent = 'Character limit exceeded!';
     } else {
       warningEl.textContent = '';
     }

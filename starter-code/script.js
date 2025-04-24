@@ -19,7 +19,12 @@ document.addEventListener("DOMContentLoaded", function () {
   let isShowingAllBars = false;
   let allDensityItems = [];
   const seeMoreBtn = document.querySelector(".see-more-btn");
-  const letterDensityContainer = document.querySelector(".letter-density-items");
+  const letterDensityContainer = document.querySelector(
+    ".letter-density-items"
+  );
+
+  // Reading time element reference
+  const readTimeElement = document.getElementById("read-time-text");
 
   // Theme state
   let darkMode = false;
@@ -42,65 +47,72 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Update textarea visual states
   function updateTextareaState() {
-    textInput.classList.remove("textarea-glow", "error");
-    
-    const hasActiveCheckbox = excludeSpacesCheckbox.checked || charLimitCheckbox.checked;
-    
-    if (hasActiveCheckbox) {
-      textInput.classList.add("textarea-glow");
+    if (!textInput.classList.contains("error")) {
+      textInput.classList.remove("textarea-glow");
+
+      const hasActiveCheckbox =
+        excludeSpacesCheckbox.checked || charLimitCheckbox.checked;
+
+      if (hasActiveCheckbox) {
+        textInput.classList.add("textarea-glow");
+      }
     }
   }
 
   // Main validation function
   function validateTextArea() {
     const textInputText = textInput.value;
-    
+
     // Count spaces in original text
     const spaceCount = (textInputText.match(/\s/g) || []).length;
-    
+
     // Process text based on checkbox
-    const processedText = excludeSpacesCheckbox.checked 
-        ? textInputText.replace(/\s+/g, "") 
-        : textInputText;
+    const processedText = excludeSpacesCheckbox.checked
+      ? textInputText.replace(/\s+/g, "")
+      : textInputText;
 
     // Update displayed character count
     charCount.innerText = String(processedText.length).padStart(2, "0");
 
     // Calculate limits
     const userSetLimit = parseInt(charLimitInput.value);
-    let effectiveLimit = userSetLimit;
-    let effectiveLength = textInputText.length;
-    
-    if (excludeSpacesCheckbox.checked && charLimitCheckbox.checked && !isNaN(userSetLimit)) {
-        // When excluding spaces, increase effective limit by space count
-        effectiveLimit = userSetLimit + spaceCount;
-        effectiveLength = processedText.length; // Count without spaces against increased limit
-    }
+    const effectiveLength = processedText.length;
 
-    // Update word
+    // Calculate Word Count
     const wordArray = textInputText.split(/[\s.:;!?(){}\[\]]+/);
-    wordCount.innerText = String(wordArray.filter(w => w.trim()).length).padStart(2, "0");
-    // sentence counts
-    const sentenceArray = textInputText.split(/[.?!]+/).filter(s => s.trim());
+    wordCount.innerText = String(
+      wordArray.filter((w) => w.trim()).length
+    ).padStart(2, "0");
+
+    // Calculate Sentence count
+    const sentenceArray = textInputText.split(/[.?!]+/).filter((s) => s.trim());
     sentenceCount.innerText = String(sentenceArray.length).padStart(2, "0");
 
-    // Apply error state if over limit 
+    // Update reading time once after all calculations
+    const readingTime = calculateReadingTime(textInputText);
+    readTimeElement.textContent =
+    readingTime < 1
+      ? "0 minutes"
+      : `${readingTime} minute${readingTime !== 1 ? "s" : ""}`;
+  
+        
+
+    // Apply error state if over limit
     if (charLimitCheckbox.checked && !isNaN(userSetLimit)) {
-        if (effectiveLength > effectiveLimit) {
-            textInput.classList.add("error");
-            errorMessage.style.display = "inline-block";
-              textInput.classList.add("error");
-            setLimit.innerText = userSetLimit;
-            textInput.addEventListener("keydown", handleLimitKeydown);
-        } else {
-            textInput.classList.remove("error");
-            errorMessage.style.display = "none";
-            textInput.removeEventListener("keydown", handleLimitKeydown);
-        }
-    } else {
+      if (effectiveLength > userSetLimit) {
+        textInput.classList.add("error");
+        errorMessage.style.display = "inline-block";
+        setLimit.innerText = userSetLimit;
+        textInput.addEventListener("keydown", handleLimitKeydown);
+      } else {
         textInput.classList.remove("error");
         errorMessage.style.display = "none";
         textInput.removeEventListener("keydown", handleLimitKeydown);
+      }
+    } else {
+      textInput.classList.remove("error");
+      errorMessage.style.display = "none";
+      textInput.removeEventListener("keydown", handleLimitKeydown);
     }
 
     // Update checkbox glow state
@@ -108,17 +120,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Letter density display
     if (textInputText.length > 0) {
-        noCharMessage.style.display = "none";
-        updateLetterDensity(textInputText);
+      noCharMessage.style.display = "none";
+      updateLetterDensity(textInputText);
     } else {
-        noCharMessage.style.display = "block";
-        clearLetterDensity();
+      noCharMessage.style.display = "block";
+      clearLetterDensity();
     }
+  }
+
+  // Calculate reading time function
+  function calculateReadingTime(text) {
+    if (!text.trim()) return 0; // Handle empty input
+    const wordCount = text
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length;
+    return Math.ceil(wordCount / 200); // Average reading speed: 200 words per minute
   }
 
   // Keydown handler for character limit
   function handleLimitKeydown(e) {
-    if (!["Backspace", "Delete", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(e.key)) {
+    if (
+      ![
+        "Backspace",
+        "Delete",
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowUp",
+        "ArrowDown",
+        "Home",
+        "End",
+      ].includes(e.key)
+    ) {
       e.preventDefault();
     }
   }
@@ -137,7 +170,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const totalLetters = Array.from(frequencyMap.values()).reduce(
-      (sum, count) => sum + count, 0
+      (sum, count) => sum + count,
+      0
     );
 
     // Sort by frequency
@@ -164,15 +198,17 @@ document.addEventListener("DOMContentLoaded", function () {
     if (allDensityItems.length > MAX_INITIAL_BARS) {
       seeMoreBtn.style.display = "block";
       seeMoreBtn.textContent = isShowingAllBars ? "See less" : "See more";
-      
-      const itemsToShow = isShowingAllBars 
-        ? allDensityItems 
+
+      const itemsToShow = isShowingAllBars
+        ? allDensityItems
         : allDensityItems.slice(0, MAX_INITIAL_BARS);
-      
-      itemsToShow.forEach(item => letterDensityContainer.appendChild(item));
+
+      itemsToShow.forEach((item) => letterDensityContainer.appendChild(item));
     } else {
       seeMoreBtn.style.display = "none";
-      allDensityItems.forEach(item => letterDensityContainer.appendChild(item));
+      allDensityItems.forEach((item) =>
+        letterDensityContainer.appendChild(item)
+      );
     }
   }
 
@@ -183,13 +219,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Event listeners
   textInput.addEventListener("input", validateTextArea);
   excludeSpacesCheckbox.addEventListener("change", validateTextArea);
-  charLimitCheckbox.addEventListener("change", function() {
+  charLimitCheckbox.addEventListener("change", function () {
     charLimitInput.style.display = this.checked ? "block" : "none";
     if (!this.checked) charLimitInput.value = "";
     validateTextArea();
   });
   charLimitInput.addEventListener("input", validateTextArea);
-  seeMoreBtn.addEventListener("click", function() {
+  seeMoreBtn.addEventListener("click", function () {
     isShowingAllBars = !isShowingAllBars;
     updateLetterDensity(textInput.value);
   });

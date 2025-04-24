@@ -81,7 +81,7 @@ const { countSentences } = require('../characterCounter.js');
  const { updateCounts } = require('../characterCounter.js');
 
 describe('DOM Updates with updateCounts()', () => {
-  let textarea, charCountEl, wordCountEl, sentenceCountEl;
+  let textarea, charCountEl, wordCountEl, sentenceCountEl, warningEl;
 
   beforeEach(() => {
     // Mock the DOM elements
@@ -89,6 +89,7 @@ describe('DOM Updates with updateCounts()', () => {
     charCountEl = document.createElement('span');
     wordCountEl = document.createElement('span');
     sentenceCountEl = document.createElement('span');
+    warningEl = document.createElement('span');
   });
 
   test('updates character, word, and sentence counts correctly', () => {
@@ -96,11 +97,28 @@ describe('DOM Updates with updateCounts()', () => {
     textarea.value = 'Hello world. This is great!';
 
     // Call the function like a user typed
-    updateCounts(textarea, charCountEl, wordCountEl, sentenceCountEl);
+    updateCounts(textarea, charCountEl, wordCountEl, sentenceCountEl, warningEl);
 
     // DOM updates
-    expect(charCountEl.textContent).toBe('27'); // 'Hello world. This is great!'.length
+    expect(charCountEl.textContent).toBe('27'); // 'Hello world. This is great!'
     expect(wordCountEl.textContent).toBe('5');  // 5 words
     expect(sentenceCountEl.textContent).toBe('2'); // 2 sentences
+  });
+
+  // Warning Test
+  test('shows warning if character count exceeds limit', () => {
+    textarea.value = 'a'.repeat(301); // 301 characters
+
+    updateCounts(textarea, charCountEl, wordCountEl, sentenceCountEl, warningEl);
+
+    expect(warningEl.textContent).toBe('⚠️ Character limit exceeded!');
+  });
+
+  test('does not show warning when under limit', () => {
+    textarea.value = 'short text';
+
+    updateCounts(textarea, charCountEl, wordCountEl, sentenceCountEl, warningEl);
+
+    expect(warningEl.textContent).toBe('');
   });
 });

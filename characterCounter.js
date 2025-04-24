@@ -12,11 +12,18 @@ function countSentences(text) {
   }
 
   //DOM Elements Mocking
-  function updateCounts(textarea, charCountEl, wordCountEl, sentenceCountEl) {
+  function updateCounts(textarea, charCountEl, wordCountEl, sentenceCountEl, warningEl) {
     const text = textarea.value;
     charCountEl.textContent = countCharacters(text);
     wordCountEl.textContent = countWords(text);
     sentenceCountEl.textContent = countSentences(text);
+
+    // Warning if character limit is exceeded
+    if (text.length > 300) {
+      warningEl.textContent = '⚠️ Character limit exceeded!';
+    } else {
+      warningEl.textContent = '';
+    }
   }
 
   module.exports = {

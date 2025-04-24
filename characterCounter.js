@@ -11,8 +11,17 @@ function countSentences(text) {
     return text.split(/[.!?]+/).filter(s => s.trim() !== "").length;
   }
 
+  //DOM Elements Mocking
+  function updateCounts(textarea, charCountEl, wordCountEl, sentenceCountEl) {
+    const text = textarea.value;
+    charCountEl.textContent = countCharacters(text);
+    wordCountEl.textContent = countWords(text);
+    sentenceCountEl.textContent = countSentences(text);
+  }
+
   module.exports = {
     countCharacters,
     countWords,
-    countSentences
+    countSentences,
+    updateCounts
   };

@@ -28,7 +28,7 @@
     </div>
 
     <!-- Text Input Area -->
-    <section class="card-body" >
+    <section class="card-body">
       <div class="text-area-container">
         <textarea id="text-input" placeholder="Start typing here...(Place your text here)"></textarea>
         <p id="error-message">ⓘ Limit reached! Your text exceeds <span id="set-limit"></span> characters</p>
@@ -43,15 +43,17 @@
             <label for="exclude-spaces">Exclude Spaces</label>
           </div>
 
-          <div class="options-group character">
+          <div class="options-group character" style="margin-right: 130px">
             <input type="checkbox" id="char-limit-checkbox">
             <label for="char-limit-checkbox">Set Character Limit</label>
             <input type="number" id="char-limit-input" style="display: none;" class="char-limit-style">
           </div>
-        </div>
 
-        <span>Approx. reading time: &lt; 1 minute</span>
-      </div>
+          <div class="reading-time-container">
+            <span>Approx. reading time:</span>
+            <span id="read-time-text">
+              < 0 minute</span>
+          </div>
     </section>
 
     <!-- Results Section -->
@@ -92,7 +94,7 @@
     </section>
   </main>
 
-  <script src="./script.js" type="module"></script> 
+  <script src="./script.js" type="module"></script>
 </body>
 
 </html>

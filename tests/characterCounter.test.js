@@ -111,7 +111,7 @@ describe('DOM Updates with updateCounts()', () => {
 
     updateCounts(textarea, charCountEl, wordCountEl, sentenceCountEl, warningEl);
 
-    expect(warningEl.textContent).toBe('⚠️ Character limit exceeded!');
+    expect(warningEl.textContent).toBe('Character limit exceeded!');
   });
 
   test('does not show warning when under limit', () => {

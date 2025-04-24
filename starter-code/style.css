@@ -1,14 +1,16 @@
 @font-face {
     font-family: 'DM_Sans';
-    src: url('./assets/fonts/DM_Sans/DMSans-VariableFont_opsz\,wght.ttf'),
+    src: url('./assets/fonts/DM_Sans/DMSans-VariableFont_opsz\,wght.ttf');
 }
-
 
 :root {
     --primary-bg: #F2F2F7;
-    /* Light mode default */
     --text-color: #12131A;
-    /* Light mode default */
+    --textarea-bg: #E4E4EF;
+    --checkbox-border: #12131A;
+    --see-more-color: #12131A;
+    --moon-icon-bg: #E4E4EF;
+    --moon-icon-border: #D0D0D7;
 }
 
 * {
@@ -22,6 +24,31 @@ body {
     padding: 1rem;
     background-color: var(--primary-bg);
     color: var(--text-color);
+}
+
+/* Dark mode styles */
+.dark-mode {
+    --primary-bg: #12131A;
+    --text-color: #FFFFFF;
+    --textarea-bg: #2A2B37;
+    --checkbox-border: #FFFFFF;
+    --see-more-color: #FFFFFF;
+    --moon-icon-bg: #2A2B37;
+    --moon-icon-border: #3A3A4A;
+}
+
+.dark-mode #text-input {
+    background-color: var(--textarea-bg);
+    color: white;
+}
+
+.dark-mode .moon-icon {
+    background-color: var(--moon-icon-bg);
+    border: 1px solid var(--moon-icon-border);
+}
+
+.dark-mode .see-more-btn {
+    color: var(--see-more-color);
 }
 
 /* header */
@@ -48,27 +75,12 @@ body {
 
 .moon-icon {
     padding: 0.5rem;
-    background-color: #E4E4EF;
+    background-color: var(--moon-icon-bg);
     border-radius: 20%;
-    border: 1px solid #D0D0D7;
-}
-
-/* Light mode textarea focus */
-#text-input:focus {
-    outline: none;
-    border-color: #C27CF8;
-    box-shadow: 0 0 0 2px rgba(138, 122, 255, 0.2);
-   
-}
-
-
-.dark-mode #text-input:focus {
-    border-color: #D3A0FA;
-    box-shadow: 0 0 0 2px rgba(211, 160, 250, 0.3);
+    border: 1px solid var(--moon-icon-border);
 }
 
 /* card header */
-
 .card-header h1 {
     font-size: 40px;
     text-align: center;
@@ -81,35 +93,35 @@ body {
 #text-input {
     width: 100%;
     padding: 0.5rem;
-    /* border: none; */
+    resize: none;
     border-radius: 0.75rem;
-    background-color: #E4E4EF;
+    background-color: var(--textarea-bg);
     height: 200px;
     margin-bottom: 1rem;
-    border: #E4E4EF;
-
+    border: 1px solid var(--textarea-bg);
 }
+
 #text-input:focus {
     outline: none;
     border-color: #C27CF8;
-    box-shadow: 0 0 0 2px rgba(194, 124, 248, 0.3); /* More visible shadow */
+    box-shadow: 0 0 0 2px rgba(194, 124, 248, 0.3);
 }
 
 /* Error state */
-#text-input.error {
-    border: 2px solid #FE8159;
-    box-shadow: 0 0 0 2px rgba(254, 129, 89, 0.3);
+.error {
+    border: 2px solid #FE8159 !important;
+    box-shadow: 0 0 0 2px rgba(254, 129, 89, 0.3) !important;
 }
 
 .textarea-glow {
     border-color: #C27CF8 !important;
     box-shadow: 0 0 0 2px rgba(194, 124, 248, 0.3) !important;
-  }
-  
-  .dark-mode .textarea-glow {
+}
+
+.dark-mode .textarea-glow {
     border-color: #D3A0FA !important;
     box-shadow: 0 0 0 2px rgba(211, 160, 250, 0.3) !important;
-  }
+}
 
 #text-input::placeholder,
 #text-input {
@@ -131,28 +143,24 @@ body {
     margin-bottom: 1rem;
 }
 
-
 .options input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
     width: 1rem;
     height: 1rem;
-    border: 1px solid black;
+    border: 1px solid var(--checkbox-border);
     border-radius: 4px;
     margin-right: 0.7rem;
     cursor: pointer;
     position: relative;
     transition: all 0.2s ease;
-    border: 1px solid var(--checkbox-border, black);
 }
-
 
 .options input[type="checkbox"]:checked {
     background-color: #D3A0FA;
     border-color: #D3A0FA;
     box-shadow: 0 0 0 2px rgba(194, 124, 248, 0.3);
 }
-
 
 .options input[type="checkbox"]:checked::after {
     content: "✓";
@@ -165,13 +173,8 @@ body {
     transform: translate(-50%, -50%);
     font-family: "Arial", sans-serif;
 }
-.options input[type="checkbox"]:checked ~ .card-body #text-input {
-    border-color: #C27CF8;
-    box-shadow: 0 0 0 2px rgba(194, 124, 248, 0.3);
-  }
-  
 
-
+/* Character Limit Button */
 .char-limit-style {
     width: 55px;
     height: 29px;
@@ -201,17 +204,14 @@ body {
     display: none;
     padding-top: 1px;
     font-size: 0.85rem;
-    color: #e63946;
+    color: #DA3701;
     font-weight: 500;
     padding-left: 1rem;
     padding-bottom: 1rem;
 }
 
-
-
 .results {
     margin-top: 2.5rem;
-
 }
 
 .result-cards {
@@ -307,24 +307,19 @@ body {
     font-size: 0.9rem;
     white-space: nowrap;
 }
+
 /* See More See Less Button */
 .see-more-btn {
     font-weight: 500;
     background: none;
     border: none;
-    color: #12131A;
+    color: var(--see-more-color);
     cursor: pointer;
     font-size: 1.2rem;
     margin-top: 8px;
-    
-    
-  }
-  .dark-mode .see-more-btn {
-    color: #FFFFFF !important; 
-  }
+}
 
-/* media Queries for tablet*/
-
+/* Media Queries for tablet*/
 @media screen and (min-width: 600px) and (max-width: 1024px) {
     body {
         padding: 2rem;
@@ -383,10 +378,9 @@ body {
         line-height: 130%;
         letter-spacing: -1px;
     }
-
 }
 
-/* media queries for desktop*/
+/* Media queries for desktop*/
 @media screen and (min-width: 1024px) {
     body {
         max-width: 1200px;
@@ -419,7 +413,6 @@ body {
         justify-content: space-between;
     }
 
-
     .options-group {
         display: flex;
         align-items: center;
@@ -428,7 +421,6 @@ body {
     .options-group.exclude {
         margin-right: 1.25rem;
     }
-
 
     .result-cards {
         grid-template-columns: repeat(3, 1fr);
@@ -447,5 +439,4 @@ body {
     .options>div {
         flex-direction: row;
     }
-
 }

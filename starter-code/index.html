@@ -37,13 +37,12 @@
 
       <!-- Options -->
       <div class="options">
-        <div>
           <div class="options-group exclude">
             <input type="checkbox" id="exclude-spaces">
             <label for="exclude-spaces">Exclude Spaces</label>
           </div>
 
-          <div class="options-group character" style="margin-right: 130px">
+          <div class="options-group character">
             <input type="checkbox" id="char-limit-checkbox">
             <label for="char-limit-checkbox">Set Character Limit</label>
             <input type="number" id="char-limit-input" style="display: none;" class="char-limit-style">
@@ -54,6 +53,7 @@
             <span id="read-time-text">
               < 0 minute</span>
           </div>
+        </div>
     </section>
 
     <!-- Results Section -->
@@ -83,7 +83,12 @@
         <h3>Letter Density</h3>
         <p>No characters found. Start typing to see letter density.</p>
         <div class="letter-density-items"></div>
-        <button class="see-more-btn" style="display: none;">See more</button>
+        <button class="see-more-btn">
+          <span class="btn-text">See more</span>
+          <svg class="btn-icon" width="12" height="7" viewBox="0 0 12 7" fill="currentColor">
+            <path d="M5.71875 6.375L1.09375 1.78125C0.9375 1.65625 0.9375 1.40625 1.09375 1.25L1.71875 0.65625C1.875 0.5 2.09375 0.5 2.25 0.65625L6 4.34375L9.71875 0.65625C9.875 0.5 10.125 0.5 10.25 0.65625L10.875 1.25C11.0312 1.40625 11.0312 1.65625 10.875 1.78125L6.25 6.375C6.09375 6.53125 5.875 6.53125 5.71875 6.375Z"/>
+          </svg>
+        </button>
         <!-- You can add dynamic letter density bars here -->
         <!-- Example: 
         <div class="letter-density-chart">

@@ -35,6 +35,8 @@ body {
     --see-more-color: #FFFFFF;
     --moon-icon-bg: #2A2B37;
     --moon-icon-border: #3A3A4A;
+    --bar-bg-color: #21222C;
+    --bar-fill-color: #BB86FC;
 }
 
 .dark-mode #text-input {
@@ -49,6 +51,14 @@ body {
 
 .dark-mode .see-more-btn {
     color: var(--see-more-color);
+}
+
+.dark-mode .bar-container {
+    background-color: var(--bar-bg-color);
+}
+
+.dark-mode .bar {
+    background-color: var(--bar-fill-color);
 }
 
 /* header */
@@ -138,19 +148,17 @@ body {
 
 .options>div {
     display: flex;
-    flex-direction: column;
     align-items: start;
     margin-bottom: 1rem;
 }
-.options{
+
+.options {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     width: 100%;
-    gap: 1rem;
-  }
-
+    flex-direction: column;
+}
 
 .options input[type="checkbox"] {
     appearance: none;
@@ -182,10 +190,6 @@ body {
     transform: translate(-50%, -50%);
     font-family: "Arial", sans-serif;
 }
-/* Approximate Reading */
-/* .reading-time-container {
-    margin-left: auto;
-} */
 
 /* Character Limit Button */
 .char-limit-style {
@@ -328,14 +332,29 @@ body {
 
 /* See More See Less Button */
 .see-more-btn {
-    font-weight: 500;
-    background: none;
+    font-weight: 5.25rem;
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
     border: none;
-    color: var(--see-more-color);
     cursor: pointer;
     font-size: 1.2rem;
     margin-top: 8px;
 }
+
+
+.see-more-btn .btn-icon {
+    width: 12px;
+    height: 7px;
+    transition: transform 0.3s ease;
+    fill: currentColor;
+}
+
+.see-more-btn.active .btn-icon {
+    transform: rotate(180deg);
+}
+
 
 /* Media Queries for tablet*/
 @media screen and (min-width: 600px) and (max-width: 1024px) {
@@ -360,9 +379,6 @@ body {
     .options {
         display: flex;
         justify-content: space-between;
-    }
-
-    .options>div {
         flex-direction: row;
     }
 
@@ -401,9 +417,8 @@ body {
 /* Media queries for desktop*/
 @media screen and (min-width: 1024px) {
     body {
-        max-width: 1200px;
+        max-width: 990px;
         margin: 0 auto;
-        padding: 2rem 12.06rem;
     }
 
     .card-body {
@@ -429,6 +444,7 @@ body {
     .options {
         display: flex;
         justify-content: space-between;
+        flex-direction: row;
     }
 
     .options-group {
